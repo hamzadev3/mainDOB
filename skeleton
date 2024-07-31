@@ -37,7 +37,8 @@ for i in range(counter, upper_limit):
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read() # content contains content of file
-                address_pattern = r'\b\d{5}\s\d{4}\b'  
+
+                address_pattern = r'\b\d{5}\s\d{4}\b'  # matching algo, working on a better one for a couple rzns 
 
 
               address_match = re.search(address_pattern, content)
