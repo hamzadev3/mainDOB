@@ -1,0 +1,50 @@
+import os
+import re
+# rule outs: 
+# HQ -> Bronx -> 1 - 5 & 7 & 9
+
+# a big problem so far is that it takes a while to manually go through folders.
+# I tried recursively going through folders but it didnt work 
+# either it took too long and I got impatient or it just didnt work logically
+# If you figure out a quicker way it would be useful. For now I have a couple dozen folder paths manually inputted. 
+# For reference. It takes 30 seconds to find Control Number 60012. Started at 60000. so 12 iterations through the folders I have.
+# It may be quicker on a smaller computer obv but I say that to keep a record for now
+# would be very helpful 2 find a quicker way. Im going to try as well 
+
+# properties -> file path 
+directories_to_search = [
+# FILL IN 
+"....",
+"....",
+"..." 
+]
+
+# upper and lower
+counter = 60000
+upper_limit = 61000
+
+for i in range(counter, upper_limit):
+    keyword = str(i) 
+    matching_files = [] 
+
+    for directory_path in directories_to_search: 
+        files = [os.path.join(directory_path, file) for file in os.listdir(directory_path)] 
+        tempmatches = [file for file in files if keyword.lower() in os.path.basename(file).lower()]
+        matching_files.extend(tempmatches)
+
+    if matching_files:
+        for file_path in matching_files:
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read() # content contains content of file
+                address_pattern = r'\b\d{5}\s\d{4}\b'  
+
+
+              address_match = re.search(address_pattern, content)
+
+                if address_match:
+                    print(f"{keyword}: {address_match.group()}")
+                else:
+                    print(f"{keyword} None")
+            except Exception as e: # On the office computer this is how most of the info is outputted. The error caught is something related to utf-8 apparently. 
+                print(f"{keyword} {file_path}")
